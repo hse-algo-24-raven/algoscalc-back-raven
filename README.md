@@ -4,9 +4,8 @@
 Репозиторий с исходным кодом серверной части приложения Онлайн-калькулятор. Проект по разработке и поддержке онлайн-калькулятора предназначен для проведения практических занятий со студентами по разработке алгоритмов для web-приложения.
 
 ## Ресурсы
-- [Тестовый контур](https://test.ommat.ru/api/algorithms) серверной части онлайн-калькулятора.
-- [Документация API (Swagger)](https://swagger.ommat.ru/docs) серверной части онлайн-калькулятора.
-- [Продуктовый контур](https://prod.ommat.ru/api/algorithms) серверной части онлайн-калькулятора.
+- [Тестовый контур](https://raven.ommat.ru/api/algorithms) серверной части онлайн-калькулятора.
+- [Документация API (Swagger)](https://raven.ommat.ru/docs) серверной части онлайн-калькулятора.
 
 ## Запуск приложения в Docker
 Определить настройки конфигурации приложения можно в файле .env.local
@@ -30,7 +29,7 @@ docker compose -f docker-compose.local.yml up
 1. Клонируйте репозиторий:
 
     ```sh
-    git clone https://github.com/OMMAT-HSE/algoscalc-back.git
+    git clone https://github.com/hse-algo-24-raven/algoscalc-back-raven.git
     cd algoscalc-back
     ```
 
