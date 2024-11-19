@@ -61,7 +61,7 @@ class AlgorithmBuilder:
             path + "/" + self.__definition_file_name, "r", encoding="utf-8"
         ) as def_file:
             definition_json = json.load(def_file)
-
+        print(definition_json)
         algo_definition = AlgorithmDefinitionSchema.model_validate(definition_json)
 
         if not self.__test_function(path):

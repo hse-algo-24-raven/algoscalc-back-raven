@@ -1,6 +1,6 @@
 import unittest
 
-from src.algorithms.fibonacci.function import main
+from src.algorithms.fibonacci_fast.function import main
 
 
 class TestCase(unittest.TestCase):
