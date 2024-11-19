@@ -1,6 +1,6 @@
 def fibonacci(n: str) -> str:
     if not n.isdigit():
-        raise ValueError("")
+        raise ValueError("Переданное значение не является целым числом")
 
     n = int(n)
 
@@ -39,7 +39,7 @@ def fibonacci(n: str) -> str:
     return str(result_matrix[0][0])
 
 
-def main(n: int):
+def main(n: str):
     return {"result": fibonacci(str(n))}
 
 
