@@ -17,12 +17,17 @@ STR_EMPTY_CASE = Case("", "Empty string")
 STR_WHITESPASE_CASE = Case("   ", "Whitespace string")
 FLOAT_CASE = Case(45.67, "Float value")
 BOOL_TRUE_CASE = Case(True, "Boolean true")
+BOOL_FALSE_CASE = Case(False, "Boolean false")
 LIST_INT_CASE = Case([1, 2, 3], "List value")
 DISCT_CASE = Case({"key": "value"}, "Dictionary value")
 TUPLE_INT_CASE = Case((1, 2), "Tuple value")
 SET_INT_CASE = Case({1, 2, 3}, "Set value")
 MATRIX_INT_CASE = Case([[1], [2]], "Int matrix")
 
+BOOL_CASES = [
+    BOOL_TRUE_CASE,
+    BOOL_FALSE_CASE,
+]
 INVALID_STRING_CASES = [
     INT_CASE,
     NONE_CASE,
@@ -106,6 +111,7 @@ FIB_DEF = {
             "data_type": "INT",
             "data_shape": "SCALAR",
             "default_value": 1,
+            "is_deterministic": True,
         }
     ],
 }
@@ -162,6 +168,7 @@ SUM_DEF = {
             "data_type": "INT",
             "data_shape": "SCALAR",
             "default_value": 2,
+            "is_deterministic": True,
         }
     ],
 }
@@ -193,6 +200,7 @@ BOOL_DEF = {
             "data_type": "BOOL",
             "data_shape": "SCALAR",
             "default_value": True,
+            "is_deterministic": True,
         }
     ],
 }

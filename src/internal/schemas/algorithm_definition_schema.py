@@ -5,6 +5,7 @@ from pydantic import ConfigDict, model_validator
 from src.internal.errors import ErrorMessageEnum as ErrMsg
 from src.internal.schemas.data_definition_schema import DataDefinitionSchema
 from src.internal.schemas.definition_schema import DefinitionSchema
+from src.internal.schemas.output_definition_schema import OutputDefinitionSchema
 
 
 class AlgorithmDefinitionSchema(DefinitionSchema):
@@ -14,7 +15,7 @@ class AlgorithmDefinitionSchema(DefinitionSchema):
     model_config = ConfigDict(frozen=True)
 
     parameters: list[DataDefinitionSchema]
-    outputs: list[DataDefinitionSchema]
+    outputs: list[OutputDefinitionSchema]
 
     def __str__(self) -> str:
         """Возвращает строковое представление экземпляра класса."""
@@ -54,7 +55,7 @@ if __name__ == "__main__":
             )
         ],
         outputs=[
-            DataDefinitionSchema(
+            OutputDefinitionSchema(
                 name="O",
                 title="Output",
                 description="Output description",
