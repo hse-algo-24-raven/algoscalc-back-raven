@@ -31,6 +31,22 @@ class TestAlgorithmExecutor:
         assert algo_executor.definition == algo_definition
         assert algo_executor.execute_timeout == DEFAULT_TIMEOUT
 
+    def test_non_deterministic_executor(
+        self, create_algo_definition, create_scalar_int_output_definition
+    ):
+        """Проверяет создание валидного объекта с не детерминированным
+        элементом выходных данных"""
+        algo_definition = create_algo_definition(
+            outputs=[
+                create_scalar_int_output_definition(
+                    name="y", value=100500, is_deterministic=False
+                )
+            ]
+        )
+
+        algo_executor = AlgorithmExecutor(algo_definition, default_method)
+        assert algo_executor.definition == algo_definition
+
     def test_set_timeout(self, create_algo_definition):
         """Проверяет создание валидного объекта с заданным таймаутом"""
         algo_definition = create_algo_definition()
@@ -165,14 +181,14 @@ class TestAlgorithmExecutor:
     def test_add_execute_method_missing_output(
         self,
         create_algo_definition,
-        create_scalar_int_data_definition,
+        create_scalar_int_output_definition,
     ):
         """Проверяет ошибку при указании метода, в котором нет одного из выходных
         данных, указанных в описании алгоритма"""
         algo_definition = create_algo_definition(
             outputs=[
-                create_scalar_int_data_definition(name="y1"),
-                create_scalar_int_data_definition(name="y2"),
+                create_scalar_int_output_definition(name="y1"),
+                create_scalar_int_output_definition(name="y2"),
             ]
         )
 
@@ -203,7 +219,12 @@ class TestAlgorithmExecutor:
             AlgorithmExecutor(algo_definition, method)
         assert str(error.value) == err_msg
 
-    def test_execute(self, create_algo_definition, create_scalar_int_data_definition):
+    def test_execute(
+        self,
+        create_algo_definition,
+        create_scalar_int_data_definition,
+        create_scalar_int_output_definition,
+    ):
         """Проверяет выполнение алгоритма"""
         algo_definition = create_algo_definition(
             name="sum",
@@ -211,7 +232,7 @@ class TestAlgorithmExecutor:
                 create_scalar_int_data_definition(name="a", value=1),
                 create_scalar_int_data_definition(name="b", value=1),
             ],
-            outputs=[create_scalar_int_data_definition(name="sum", value=2)],
+            outputs=[create_scalar_int_output_definition(name="sum", value=2)],
         )
 
         def method(a, b):
@@ -254,7 +275,10 @@ class TestAlgorithmExecutor:
         )
 
     def test_execute_missed_param(
-        self, create_algo_definition, create_scalar_int_data_definition
+        self,
+        create_algo_definition,
+        create_scalar_int_data_definition,
+        create_scalar_int_output_definition,
     ):
         """Проверяет ошибку выполнения алгоритма при отсутствии параметра"""
         algo_definition = create_algo_definition(
@@ -263,7 +287,7 @@ class TestAlgorithmExecutor:
                 create_scalar_int_data_definition(name="a", value=1),
                 create_scalar_int_data_definition(name="b", value=1),
             ],
-            outputs=[create_scalar_int_data_definition(name="sum", value=2)],
+            outputs=[create_scalar_int_output_definition(name="sum", value=2)],
         )
 
         def method(a, b):
@@ -308,11 +332,11 @@ class TestAlgorithmExecutor:
         assert str(error.value) == ErrMsgTmpl.TIME_OVER.format(timeout, params)
 
     def test_execute_runtime_error(
-        self, create_scalar_float_data_definition, create_algo_definition
+        self, create_scalar_float_output_definition, create_algo_definition
     ):
         """Проверяет ошибку при выполнении алгоритма"""
         algo_definition = create_algo_definition(
-            outputs=[create_scalar_float_data_definition(name="y")]
+            outputs=[create_scalar_float_output_definition(name="y")]
         )
 
         def method(x):
