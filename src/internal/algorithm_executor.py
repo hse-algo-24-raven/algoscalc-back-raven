@@ -20,6 +20,7 @@ from src.internal.schemas.data_element_schema import (
     DataElementSchema,
     DataElementsSchema,
 )
+from src.internal.schemas.output_definition_schema import OutputDefinitionSchema
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +144,7 @@ class AlgorithmExecutor(object):
 
     def validate_input_values(self, fact_params: dict[str, Any]) -> None:
         """ "Проверяет входные данные для выполнения алгоритма. При наличии
-        ошибок вызывает исключения TypeError, ValueError."""
+        ошибок вызывает исключения AlgorithmTypeError, AlgorithmValueError."""
         if not isinstance(fact_params, dict):
             raise AlgorithmTypeError(ErrMsg.INCORRECT_PARAMS)
         for key in fact_params.keys():
@@ -160,7 +161,7 @@ class AlgorithmExecutor(object):
 
     def __validate_output_values(self, method_outputs: dict[str, Any]) -> None:
         """ "Проверяет выходные данные для выполнения алгоритма. При наличии
-        ошибок вызывает исключения TypeError, ValueError."""
+        ошибок вызывает исключения AlgorithmTypeError, AlgorithmValueError."""
         if not isinstance(method_outputs, dict):
             raise AlgorithmTypeError(ErrMsg.NOT_DICT_OUTPUTS)
         for key in method_outputs.keys():
@@ -188,14 +189,14 @@ class AlgorithmExecutor(object):
                 for param in self.definition.parameters
             ]
             outputs = self.execute(params)
-            for name, default_value in [
-                (output.name, output.default_value)
+            for name, default_value, is_deterministic in [
+                (output.name, output.default_value, output.is_deterministic)
                 for output in self.definition.outputs
             ]:
                 fact_value = [
                     output.value for output in outputs if output.name == name
                 ][0]
-                if fact_value != default_value:
+                if fact_value != default_value and is_deterministic:
                     raise AlgorithmValueError(
                         ErrMsgTmpl.UNEXPECTED_OUTPUT.format(
                             fact_value, name, default_value
@@ -243,7 +244,7 @@ if __name__ == "__main__":
             )
         ],
         outputs=[
-            DataDefinitionSchema(
+            OutputDefinitionSchema(
                 name="o",
                 title="Output",
                 description="Output description",

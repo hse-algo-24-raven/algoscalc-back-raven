@@ -11,6 +11,7 @@ from src.internal.data_dimension.data_shape_enum import DataShapeEnum
 from src.internal.data_dimension.data_type_enum import DataTypeEnum
 from src.internal.schemas.algorithm_definition_schema import AlgorithmDefinitionSchema
 from src.internal.schemas.data_definition_schema import DataDefinitionSchema
+from src.internal.schemas.output_definition_schema import OutputDefinitionSchema
 from tests import DESCRIPTION, FIB_DEF, FIB_FUNC, FIB_NAME, FIB_TESTS, NAME, TITLE
 
 
@@ -81,6 +82,44 @@ def create_scalar_int_data_definition():
 
 
 @pytest.fixture()
+def create_scalar_float_output_definition():
+    """Создает скалярное вещественное описание выходных данных"""
+
+    def _create_scalar_float_output_definition(
+        name=NAME, value=1, is_deterministic=True
+    ):
+        return OutputDefinitionSchema(
+            name=name,
+            title="Data",
+            description="Data description",
+            data_type=DataTypeEnum.FLOAT,
+            data_shape=DataShapeEnum.SCALAR,
+            default_value=value,
+            is_deterministic=is_deterministic,
+        )
+
+    return _create_scalar_float_output_definition
+
+
+@pytest.fixture()
+def create_scalar_int_output_definition():
+    """Создает скалярное целочисленное описание выходных данных"""
+
+    def _create_scalar_int_output_definition(name=NAME, value=1, is_deterministic=True):
+        return OutputDefinitionSchema(
+            name=name,
+            title="Data",
+            description="Data description",
+            data_type=DataTypeEnum.INT,
+            data_shape=DataShapeEnum.SCALAR,
+            default_value=value,
+            is_deterministic=is_deterministic,
+        )
+
+    return _create_scalar_int_output_definition
+
+
+@pytest.fixture()
 def create_scalar_float_data_definition():
     """Создает скалярное вещественное описание данных"""
 
@@ -98,7 +137,9 @@ def create_scalar_float_data_definition():
 
 
 @pytest.fixture()
-def create_algo_definition(create_scalar_int_data_definition):
+def create_algo_definition(
+    create_scalar_int_data_definition, create_scalar_int_output_definition
+):
     """Создает описание алгоритма"""
 
     def _create_algo_definition(name=NAME, parameters=None, outputs=None):
@@ -107,7 +148,7 @@ def create_algo_definition(create_scalar_int_data_definition):
             title=TITLE,
             description=DESCRIPTION,
             parameters=parameters or [create_scalar_int_data_definition("x")],
-            outputs=outputs or [create_scalar_int_data_definition("y")],
+            outputs=outputs or [create_scalar_int_output_definition("y")],
         )
 
     return _create_algo_definition
