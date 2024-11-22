@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "algoscalc-back"
-version = "1.1.0"
+version = "2.0.0"
 description = "A training project for the development of algorithms in the context of a web application"
 authors = ["Alexander Mikhailov <45492097+MikhailovAlexander@users.noreply.github.com>"]
 license = "MIT"
