@@ -1,0 +1,35 @@
+{
+  "name": "matrix_generator",
+  "title": "Генератор матрицы и ее определителя",
+  "description": "Генерирует квадратную целочисленную матрицу и ее определитель",
+  "parameters": [
+    {
+      "name": "order",
+      "title": "Порядок матрицы",
+      "description": "Введите целое число больше нуля",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 1
+    }
+  ],
+  "outputs": [
+    {
+      "name": "generated_matrix",
+      "title": "Матрица",
+      "description": "Квадратная целочисленная матрица заданного размера",
+      "data_type": "INT",
+      "data_shape": "MATRIX",
+      "default_value": [[1]],
+      "is_deterministic": false
+    },
+    {
+      "name": "determinant",
+      "title": "Определитель",
+      "description": "Определитель матрицы",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 1,
+      "is_deterministic": false
+    }
+  ]
+}
