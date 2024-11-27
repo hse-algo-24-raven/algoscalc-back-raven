@@ -7,7 +7,6 @@ from src.internal.errors import AlgorithmValueError
 GENERATED_MATRIX = "generated_matrix"
 DETERMINANT = "determinant"
 
-
 def check_order(order: int):
     """Проверка на порядок матрицы
 
@@ -33,6 +32,54 @@ def generate_identity_matrix(order: int) -> list[list[int]]:
     check_order(order)
     return [[int(i == j) for i in range(order)] for j in range(order)]
 
+def __make_random_values_matrix_save_det(
+    matrix: list[list[int]], rangeStart: int, rangeEnd: int
+):
+    """Вставляет случайные числа внутрь единичной матрицы, при этом сохраняя
+    значение определителя. Достигается за счёт генерации исключительно
+    справа/сверху от главной диагонали матрицы.
+
+    :param rangeStart: начальная граница генерации чисел
+    :param rangeEnd: конечная граница генерации чисел
+    """
+    for i in range(len(matrix)):
+        for j in range(i + 1, len(matrix)):
+            matrix[i][j] = random.randint(rangeStart, rangeEnd)
+
+def __get_random_multiplier(generationMiddle, generationRange):
+    return generationMiddle + random.randint(1, generationRange) * (
+        -1 if random.randint(0, 1) == 0 else 1
+    )
+
+def __make_random_shake_matrix_save_det(
+    matrix: list[list[int]], generationMiddle: int, generationRange: int
+):
+    """Делает обычную матрицу более разреженной при этом сохраняя
+    определитель матрицы за счёт свойства определителя матрицы.
+    Определитель матрицы сохраняется, если одну строку умножить на
+    любую величину и прибавить к другой строке.
+
+    :param generationMiddle: середина генерации множителя чисел
+    :param generationRange: граница генерации множителя чисел
+    """
+
+    if generationRange < 1:
+        raise AlgorithmValueError(
+            "Введённая граница генерации не может быть меньше 1"
+        )
+
+    order = len(matrix)
+
+    for i in range(order//2):
+        multiplier = __get_random_multiplier(generationMiddle, generationRange)
+        for j in range(len(matrix)):
+            matrix[i][j] += matrix[order - i - 1][j] * multiplier
+
+    for j in range(order//2):
+        multiplier = __get_random_multiplier(generationMiddle, generationRange)
+        for i in range(len(matrix)):
+            a = matrix[i][order - j - 1] * multiplier
+            matrix[i][j] += a
 
 def generate_random_matrix_by_det(order: int, det: int):
     """Генерирует случайную квадратную целочисленную матрицу на основе определителя.
@@ -43,61 +90,11 @@ def generate_random_matrix_by_det(order: int, det: int):
     :return: итоговая случайная матрица
     """
 
-    def make_random_values_matrix_save_det(
-        matrix: list[list[int]], rangeStart: int, rangeEnd: int
-    ):
-        """Вставляет случайные числа внутрь единичной матрицы, при этом сохраняя
-        значение определителя. Достигается за счёт генерации исключительно
-        справа/сверху от главной диагонали матрицы.
-
-        :param rangeStart: начальная граница генерации чисел
-        :param rangeEnd: конечная граница генерации чисел
-        """
-        for i in range(order):
-            for j in range(i + 1, order):
-                matrix[i][j] = random.randint(rangeStart, rangeEnd)
-
-    def make_random_shake_matrix_save_det(
-        matrix: list[list[int]], generationMiddle: int, generationRange: int
-    ):
-        """Делает обычную матрицу более разреженной при этом сохраняя
-        определитель матрицы за счёт свойства определителя матрицы.
-        Определитель матрицы сохраняется, если одну строку умножить на
-        любую величину и прибавить к другой строке.
-
-        :param generationMiddle: середина генерации множителя чисел
-        :param generationRange: граница генерации множителя чисел
-        """
-
-        def get_random_multiplier():
-            nonlocal generationMiddle, generationRange
-            return generationMiddle + random.randint(1, generationRange) * (
-                -1 if random.randint(0, 1) == 0 else 1
-            )
-
-        if generationRange < 1:
-            raise AlgorithmValueError(
-                "Введённая граница генерации не может быть меньше 1"
-            )
-
-        for i in range(order):
-            multiplier = get_random_multiplier()
-            for j in range(len(matrix)):
-                matrix[i][j] += matrix[order - i - 1][j] * multiplier
-
-        for j in range(order):
-            multiplier = get_random_multiplier()
-            for i in range(len(matrix)):
-                a = matrix[i][order - j - 1] * multiplier
-                matrix[i][j] += a
-
     # Проверка order внутри generate_identity_matrix
     matrix = generate_identity_matrix(order)
-    matrix[0][
-        0
-    ] = det  # Задаётся определитель матрицы путём расположения на главной диагонали
-    make_random_values_matrix_save_det(matrix, -100, 100)
-    make_random_shake_matrix_save_det(matrix, 5, 3)
+    matrix[0][0] = det  # Задаётся определитель матрицы путём расположения на главной диагонали
+    __make_random_values_matrix_save_det(matrix, -100, 100)
+    __make_random_shake_matrix_save_det(matrix, 5, 3)
 
     return matrix
 
