@@ -33,37 +33,37 @@ def generate_identity_matrix(order: int) -> list[list[int]]:
     return [[int(i == j) for i in range(order)] for j in range(order)]
 
 def __make_random_values_matrix_save_det(
-    matrix: list[list[int]], rangeStart: int, rangeEnd: int
+    matrix: list[list[int]], range_start: int, range_end: int
 ):
     """Вставляет случайные числа внутрь единичной матрицы, при этом сохраняя
     значение определителя. Достигается за счёт генерации исключительно
     справа/сверху от главной диагонали матрицы.
 
-    :param rangeStart: начальная граница генерации чисел
-    :param rangeEnd: конечная граница генерации чисел
+    :param range_start: начальная граница генерации чисел
+    :param range_end: конечная граница генерации чисел
     """
     for i in range(len(matrix)):
         for j in range(i + 1, len(matrix)):
-            matrix[i][j] = random.randint(rangeStart, rangeEnd)
+            matrix[i][j] = random.randint(range_start, range_end)
 
-def __get_random_multiplier(generationMiddle, generationRange):
-    return generationMiddle + random.randint(1, generationRange) * (
+def __get_random_multiplier(generation_middle, generation_range):
+    return generation_middle + random.randint(1, generation_range) * (
         -1 if random.randint(0, 1) == 0 else 1
     )
 
 def __make_random_shake_matrix_save_det(
-    matrix: list[list[int]], generationMiddle: int, generationRange: int
+    matrix: list[list[int]], generation_middle: int, generation_range: int
 ):
     """Делает обычную матрицу более разреженной при этом сохраняя
     определитель матрицы за счёт свойства определителя матрицы.
     Определитель матрицы сохраняется, если одну строку умножить на
     любую величину и прибавить к другой строке.
 
-    :param generationMiddle: середина генерации множителя чисел
-    :param generationRange: граница генерации множителя чисел
+    :param generation_middle: начальное число, от которого произойдёт генерация
+    :param generation_range: граница генерации
     """
 
-    if generationRange < 1:
+    if generation_range < 1:
         raise AlgorithmValueError(
             "Введённая граница генерации не может быть меньше 1"
         )
@@ -71,12 +71,12 @@ def __make_random_shake_matrix_save_det(
     order = len(matrix)
 
     for i in range(order//2):
-        multiplier = __get_random_multiplier(generationMiddle, generationRange)
+        multiplier = __get_random_multiplier(generation_middle, generation_range)
         for j in range(len(matrix)):
             matrix[i][j] += matrix[order - i - 1][j] * multiplier
 
     for j in range(order//2):
-        multiplier = __get_random_multiplier(generationMiddle, generationRange)
+        multiplier = __get_random_multiplier(generation_middle, generation_range)
         for i in range(len(matrix)):
             a = matrix[i][order - j - 1] * multiplier
             matrix[i][j] += a
