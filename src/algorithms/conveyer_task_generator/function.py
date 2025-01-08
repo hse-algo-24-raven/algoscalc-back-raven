@@ -15,13 +15,13 @@ def __validate_params(task_number: int, min_duration: int, max_duration: int) ->
         raise AlgorithmTypeError("Максимальная длительность должна быть целым числом")
 
     if task_number < 3:
-        raise AlgorithmValueError("Количество задач должно быть больше или равно 3")
-    if min_duration > max_duration:
+        raise AlgorithmValueError("Количество задач меньше 3")
+    if min_duration >= max_duration:
         raise AlgorithmValueError("Минимальное значение больше максимального")
-    if min_duration < 1:
-        raise AlgorithmValueError("Минимальное значение не положительно")
     if max_duration < 1:
         raise AlgorithmValueError("Максимальное значение не положительно")
+    if min_duration < 1:
+        raise AlgorithmValueError("Минимальное значение не положительно")
 
 
 def generate_tasks(task_number, min_duration=1, max_duration=20):

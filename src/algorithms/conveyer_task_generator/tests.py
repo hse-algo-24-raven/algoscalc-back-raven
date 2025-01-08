@@ -29,6 +29,16 @@ class TestCase(unittest.TestCase):
                     self.assertGreaterEqual(duration, min_dur)
                     self.assertLessEqual(duration, max_dur)
 
+    def test_incorrect_type_valid(self):
+        incorrect_cases = (["1", 2, 3], [1, 2.5, 3], [1, 2, [33]])
+        for case in incorrect_cases:
+            self.assertRaises(AlgorithmTypeError, generate_tasks, *case)
+
+    def test_incorrect_value_valid(self):
+        incorrect_cases = ([0, 2, 4], [4, 2, 2], [10, 2, 1], [10, -2, 2], [5, -3, -2])
+        for case in incorrect_cases:
+            self.assertRaises(AlgorithmValueError, generate_tasks, *case)
+
 
 if __name__ == "__main__":
     unittest.main()
