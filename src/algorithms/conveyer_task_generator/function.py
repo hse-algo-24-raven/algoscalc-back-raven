@@ -53,7 +53,7 @@ def __has_downtime(original_tasks: list) -> bool:
 
     offsets = []
     current_time_worker_1, current_time_worker_2 = 0, 0
-    for idx, (first_stage, second_stage) in enumerate(tasks):
+    for first_stage, second_stage in tasks:
         # Работник 1 выполняет первый этап
         start_time_worker_1 = current_time_worker_1
         end_time_worker_1 = start_time_worker_1 + first_stage
@@ -71,27 +71,27 @@ def __has_downtime(original_tasks: list) -> bool:
 
 
 def __create_pseudorandom_in_start(tasks, min_duration, max_duration):
-    firstStageNewTime = random.randint(min_duration, (max_duration + min_duration) // 2)
-    secondStageNewTime = random.randint(
-        firstStageNewTime, (max_duration + min_duration) // 2
+    first_stage_new_time = random.randint(min_duration, (max_duration + min_duration) // 2)
+    second_stage_new_time = random.randint(
+        first_stage_new_time, (max_duration + min_duration) // 2
     )
-    tasks[0] = [firstStageNewTime, secondStageNewTime]
-    firstStageNewTime = random.randint(secondStageNewTime + 1, max_duration - 1)
-    secondStageNewTime = random.randint(firstStageNewTime, max_duration)
-    tasks[1] = [firstStageNewTime, secondStageNewTime]
+    tasks[0] = [first_stage_new_time, second_stage_new_time]
+    first_stage_new_time = random.randint(second_stage_new_time + 1, max_duration - 1)
+    second_stage_new_time = random.randint(first_stage_new_time, max_duration)
+    tasks[1] = [first_stage_new_time, second_stage_new_time]
 
     for i in range(2, len(tasks)):
         first_stage, second_stage = tasks[i]
         if first_stage > second_stage:
             break
-        firstStageNewTime = random.randint(firstStageNewTime, max_duration - 1)
-        if second_stage < firstStageNewTime:
-            secondStageNewTime = random.randint(
-                max(firstStageNewTime, secondStageNewTime), max_duration
+        first_stage_new_time = random.randint(first_stage_new_time, max_duration - 1)
+        if second_stage < first_stage_new_time:
+            second_stage_new_time = random.randint(
+                max(first_stage_new_time, second_stage_new_time), max_duration
             )
         else:
-            secondStageNewTime = second_stage
-        tasks[i] = [firstStageNewTime, secondStageNewTime]
+            second_stage_new_time = second_stage
+        tasks[i] = [first_stage_new_time, second_stage_new_time]
 
 
 def __generate_random_tasks(task_number, min_duration, max_duration):
