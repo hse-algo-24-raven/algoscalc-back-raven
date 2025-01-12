@@ -6,7 +6,7 @@
     {
       "name": "task_number",
       "title": "Количество задач",
-      "description": "Введите целое положительное число",
+      "description": "Введите целое положительное число не менее 3",
       "data_type": "INT",
       "data_shape": "SCALAR",
       "default_value": 3
@@ -22,7 +22,7 @@
     {
       "name": "max_duration",
       "title": "Максимальная длительность этапа задачи",
-      "description": "Введите целое положительное число",
+      "description": "Введите целое положительное число (больше минимального)",
       "data_type": "INT",
       "data_shape": "SCALAR",
       "default_value": 20

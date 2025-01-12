@@ -4,24 +4,31 @@ from typing import Any
 from src.internal.errors import AlgorithmTypeError, AlgorithmValueError
 
 TASKS = "tasks"
+ERR_MSG_TASK_NUMBER_MUST_INT = "Число задач должно быть целым числом"
+ERR_MSG_MIN_DURATION_MUST_INT = "Минимальная длительность должна быть целым числом"
+ERR_MSG_MAX_DURATION__MUST_INT = "Максимальная длительность должна быть целым числом"
+ERR_MSG_TO_LITTLE_TASK_NUMBER = "Число задач должно быть целым числом"
+ERR_MSG_MIN_MORE_MAX = "Число задач должно быть целым числом"
+ERR_MSG_MIN_IS_NOT_POSITIVE = "Число задач должно быть целым числом"
+ERR_MSG_MAX_IS_NOT_POSITIVE = "Число задач должно быть целым числом"
 
 
 def __validate_params(task_number: int, min_duration: int, max_duration: int) -> None:
     if not isinstance(task_number, int):
-        raise AlgorithmTypeError("Число задач должно быть целым числом")
+        raise AlgorithmTypeError(ERR_MSG_TASK_NUMBER_MUST_INT)
     if not isinstance(min_duration, int):
-        raise AlgorithmTypeError("Минимальная длительность должна быть целым числом")
+        raise AlgorithmTypeError(ERR_MSG_MIN_DURATION_MUST_INT)
     if not isinstance(max_duration, int):
-        raise AlgorithmTypeError("Максимальная длительность должна быть целым числом")
+        raise AlgorithmTypeError(ERR_MSG_MAX_DURATION__MUST_INT)
 
     if task_number < 3:
-        raise AlgorithmValueError("Количество задач меньше 3")
+        raise AlgorithmValueError(ERR_MSG_TO_LITTLE_TASK_NUMBER)
     if min_duration >= max_duration:
-        raise AlgorithmValueError("Минимальное значение больше максимального")
+        raise AlgorithmValueError(ERR_MSG_MIN_MORE_MAX)
     if max_duration < 1:
-        raise AlgorithmValueError("Максимальное значение не положительно")
+        raise AlgorithmValueError(ERR_MSG_MIN_IS_NOT_POSITIVE)
     if min_duration < 1:
-        raise AlgorithmValueError("Минимальное значение не положительно")
+        raise AlgorithmValueError(ERR_MSG_MAX_IS_NOT_POSITIVE)
 
 
 def generate_tasks(task_number, min_duration=1, max_duration=20):
@@ -72,21 +79,32 @@ def _generate_pass(tasks_list: list[list]) -> list[list]:
 
     while sum_difference <= 0:
         for task_index in range(len(new_tasks_list)):
-            current_task = new_tasks_list[task_index]
-            if current_task[0] < current_task[1]:
-                if current_task[1] - current_task[0] > 1:
-                    current_task[1] -= 1
-                    sum_difference += 1
-            if current_task[0] > current_task[1]:
-                if current_task[1] > 10:
-                    current_task[1] -= 1
-                    sum_difference += 1
-
-                if current_task[0] < 20:
-                    current_task[0] += 1
-                    sum_difference += 1
-            new_tasks_list[task_index] = current_task
+            new_tasks_list[task_index], sum_difference = _change_difference(
+                new_tasks_list[task_index], sum_difference
+            )
     return new_tasks_list
+
+
+def _change_difference(
+    current_task: list[int], sum_difference: int
+) -> tuple[list[int], int]:
+    if current_task[0] < current_task[1]:
+
+        if current_task[1] - current_task[0] > 1:
+            current_task[1] -= 1
+            sum_difference += 1
+
+    if current_task[0] > current_task[1]:
+
+        if current_task[1] > 10:
+            current_task[1] -= 1
+            sum_difference += 1
+
+        if current_task[0] < 20:
+            current_task[0] += 1
+            sum_difference += 1
+
+    return current_task, sum_difference
 
 
 def main(task_number: int, min_duration: int, max_duration: int) -> dict[str, Any]:
