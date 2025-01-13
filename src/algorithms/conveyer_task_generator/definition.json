@@ -1,0 +1,42 @@
+{
+  "name": "conveyer_task_generator",
+  "title": "Генератор условий конвейерной задачи",
+  "description": "Генерирует список задач, в указанном количестве. Для каждой задачи длительности первого и второго этапа случайны, но в заданном диапазоне.",
+  "parameters": [
+    {
+      "name": "task_number",
+      "title": "Количество задач",
+      "description": "Введите целое положительное число, которое больше или равно 3",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 3
+    },
+    {
+      "name": "min_duration",
+      "title": "Минимальная длительность этапа задачи",
+      "description": "Введите целое положительное число",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 1
+    },
+    {
+      "name": "max_duration",
+      "title": "Максимальная длительность этапа задачи",
+      "description": "Введите целое положительное число",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 20
+    }
+  ],
+  "outputs": [
+    {
+      "name": "tasks",
+      "title": "Список задач",
+      "description": "Список задач в формате (длительность 1 этапа, длительность 2 этапа)",
+      "data_type": "STRING",
+      "data_shape": "SCALAR",
+      "default_value": "[[1,2], [3,4], [5,6]]",
+      "is_deterministic": false
+    }
+  ]
+}
