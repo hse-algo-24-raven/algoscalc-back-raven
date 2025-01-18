@@ -1,0 +1,42 @@
+{
+  "name": "assignment_task_generator",
+  "title": "Генератор условий задачи о назначениях",
+  "description": "Генерирует матрицу затрат заданного порядка. Для каждого возможного назначения стоимость задается случайно, но в заданном диапазоне.",
+  "parameters": [
+    {
+      "name": "order",
+      "title": "Порядок матрицы затрат",
+      "description": "Введите целое положительное число",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 5
+    },
+    {
+      "name": "min_cost",
+      "title": "Минимальная стоимость назначения",
+      "description": "Введите целое положительное число",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 3
+    },
+    {
+      "name": "max_cost",
+      "title": "Максимальная стоимость назначения",
+      "description": "Введите целое положительное число",
+      "data_type": "INT",
+      "data_shape": "SCALAR",
+      "default_value": 15
+    }
+  ],
+  "outputs": [
+    {
+      "name": "costs",
+      "title": "Матрица затрат",
+      "description": "Квадратная матрица затрат заданного порядка",
+      "data_type": "INT",
+      "data_shape": "MATRIX",
+      "default_value": [[1,2,3], [3,4,5], [5,6,7]],
+      "is_deterministic": false
+    }
+  ]
+}
