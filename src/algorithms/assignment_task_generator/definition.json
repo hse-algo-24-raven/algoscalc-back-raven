@@ -6,7 +6,7 @@
     {
       "name": "order",
       "title": "Порядок матрицы затрат",
-      "description": "Введите целое положительное число",
+      "description": "Введите целое число больше двух",
       "data_type": "INT",
       "data_shape": "SCALAR",
       "default_value": 5
