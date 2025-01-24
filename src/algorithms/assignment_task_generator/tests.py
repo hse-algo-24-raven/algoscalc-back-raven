@@ -82,7 +82,7 @@ class TestCase(unittest.TestCase):
 
     def test_min_max_diff(self):
         self.assertRaisesRegex(
-            AlgorithmValueError, MIN_MAX_COST_ERR_MSG, generate_matrix, 1, 2, 1
+            AlgorithmValueError, MIN_MAX_COST_ERR_MSG, generate_matrix, 3, 2, 1
         )
 
 
