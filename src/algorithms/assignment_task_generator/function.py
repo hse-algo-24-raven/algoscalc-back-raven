@@ -141,28 +141,31 @@ def generate_matrix(order: int, min_cost: int, max_cost: int):
             free_columns.append(column)
 
     random.shuffle(free_columns)
-    addition_column = free_columns.pop()
 
-    min_addition_column_value = random.randint(1, (max_cost + min_cost) // 4)
-
-    # Заполнение колонки с редукцией
-    for row in range(order):
-        if not matrix[row][addition_column]:
-            matrix[row][addition_column] = min_addition_column_value
-        else:
-            matrix[row][addition_column] = 1
+    if len(free_columns) != 0:
+        # Воссоздание редукции по колонке
+        addition_column = free_columns.pop()
+        min_addition_column_value = random.randint(1, (max_cost + min_cost) // 4)
+    else:
+        addition_column = -1
+        min_addition_column_value = 0
 
     # Перевод в ответ
     for row in range(order):
-        founded_max_value = max(matrix[row])
-        diff_max = max_cost - founded_max_value
+        diff_max = max_cost - min_addition_column_value
         min_value = random.randint(min_cost, diff_max - 1)
+
         for column in range(order):
-            if matrix[row][column] != 0:
-                # Генерация по остаточному принципу
-                matrix[row][column] = random.randint(min_value + 1, max_cost)
+            if column != addition_column:
+                if matrix[row][column]:
+                    matrix[row][column] = random.randint(min_value + 1, max_cost)
+                else:
+                    matrix[row][column] = min_value
             else:
-                matrix[row][column] = min_value
+                if matrix[row][column]:
+                    matrix[row][column] = random.randint(min_value + min_addition_column_value + 1, max_cost)
+                else:
+                    matrix[row][column] = min_addition_column_value+min_value
 
     return matrix
 
